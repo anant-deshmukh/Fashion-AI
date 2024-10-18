@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+    padding: 20px;
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+}
+
+.input-section, .preview-section, .result-section {
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#gender, #imageUpload, #startCameraButton, #captureButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#imageCanvas, #videoPreview {
+    max-width: 100%;
+    height: auto;
+}
+
+#skinToneResult, #outfitSuggestion {
+    font-weight: bold;
+}
