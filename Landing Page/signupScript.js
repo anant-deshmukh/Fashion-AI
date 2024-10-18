@@ -30,6 +30,8 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
                     Email: email
                 });
                 registerMessage.textContent = 'User registered successfully!';
+                registerMessage.style.color = "green";
+                window.location.href= "login.html";
             } catch (error) {
                 console.error(error);
                 registerMessage.textContent = 'Error registering user. Please try again.';

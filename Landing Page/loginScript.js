@@ -11,7 +11,6 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
     const loginMessageElement = document.getElementById('loginMessage');
 
-
     // Fetch user data from the database
     const userRef = ref(database, 'users/' + username);
     const snapshot = await get(userRef);
@@ -22,6 +21,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             loginMessageElement.textContent = "Login successful!";
             loginMessageElement.style.color = "green";
             // Redirect to another page or do something after successful login
+            window.location.href = "dashboard.html";
         } else {
             loginMessageElement.textContent = "Incorrect password.";
             loginMessageElement.style.color = "red";
