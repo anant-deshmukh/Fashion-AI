@@ -98,10 +98,10 @@ function getSkinTone(r, g, b) {
 function suggestOutfit(skinTone, gender) {
     const outfits = {
         male: {
-            Fair: ['Navy blue', 'Burgundy', 'Forest green'],
+            Fair: ['Blue Shirt with Khaki Pant','Gery Shirt with Black Pant' , 'White Shirt with navy Pant'],
             Light: ['Royal blue', 'Maroon', 'Olive green'],
-            Medium: ['Sky blue', 'Red', 'Khaki'],
-            Dark: ['Pastel blue', 'Orange', 'Beige']
+            Medium: ['white Shirt with Navy Pant' ,'Red Shirt with white Pant' ,'Yellow Shirt with Purple Pant'],
+            Dark: ['Grey Shirt with Khaki Pant' ,'Purple Shirt with White Pant' ,'Yellow Shirt with Blue Jeans']
         },
         female: {
             Fair: ['Deep purple', 'Emerald green', 'Ruby red'],
