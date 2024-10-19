@@ -3,6 +3,13 @@
 import { database } from "../Database/firebase.js";
 import { get, ref } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
+document.addEventListener('DOMContentLoaded', () => {
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    if (loggedInUser) {
+        // User is already logged in, redirect to tryfashionai.html
+        window.location.href = "tryfashionai.html";
+    }
+});
 
 document.getElementById('loginForm').addEventListener('submit', async (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -20,8 +27,11 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
         if (userData.password === password) {
             loginMessageElement.textContent = "Login successful!";
             loginMessageElement.style.color = "green";
+
+            // save login state to localStorage
+            localStorage.setItem('loggedInUser', username);
             // Redirect to another page or do something after successful login
-            window.location.href = "dashboard.html";
+            window.location.href = "tryfashionai.html";
         } else {
             loginMessageElement.textContent = "Incorrect password.";
             loginMessageElement.style.color = "red";
