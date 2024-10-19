@@ -32,10 +32,16 @@
     // });
 
         async function uploadImage(file) {
-            const userId = "user12345"; // Replace with the actual user ID
+            const userId = localStorage.getItem('loggedInUser');
             const storageRef = ref(storage, `images/${userId}/${file.name}`);
 
-            try {
+
+            if(userId == null){
+                alert("Please Login First");
+                window.location.replace("login.html");
+            }
+            else{
+                try {
                 // Upload the image
                 const snapshot = await uploadBytes(storageRef, file);
                 console.log('Image uploaded successfully!');
@@ -53,7 +59,13 @@
                 console.error("Error uploading image:", error);
             }
         }
-
+    }
+        //logout button with deleting localStorage
+        document.getElementById("logout").addEventListener("click", () => {
+            localStorage.removeItem('loggedInUser');
+            window.location.href = "index.html";
+        });
+        
         
         window.uploadImage = uploadImage;
         // window.uploadImage1 = uploadImage1;
@@ -62,6 +74,11 @@
         </script>
 </head>
 <body> 
+    <div>
+        <button id="logout">Logout</button>
+        <button onclick="window.location.href='index.html'">Home</button>
+
+    </div>
     <div class="container">
         <h1>Skin Tone Outfit Suggester</h1>
         <div class="input-section">
