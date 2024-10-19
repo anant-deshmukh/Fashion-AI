@@ -20,6 +20,7 @@
 
 }
 
+
 .login-container {
     background: white;
     padding: 2rem;
@@ -67,6 +68,24 @@ button:hover {
     background-color: #218838;
 }
 
+a {
+    text-align: center;
+    text-decoration: none; /* Removes the underline from the link */
+    color: #007BFF; /* Sets the text color to blue */
+    font-weight: bold; /* Makes the text bold */
+    font-size: 16px; /* Adjust the font size */
+    border: 2px solid #007BFF; /* Adds a blue border around the link */
+    padding: 10px 20px; /* Adds padding inside the link */
+    border-radius: 5px; /* Rounds the corners of the border */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Adds a transition effect */
+}
+
+a:hover {
+    background-color: #007BFF; /* Changes background color on hover */
+    color: white; /* Changes text color to white on hover */
+}
+
+
 </style>
 
 </head>
@@ -84,6 +103,8 @@ button:hover {
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Login</button>
+            <br>
+            <a href="signup.html">Create new Account</a>
         </form>
         <div id="loginMessage"></div>
     </div>

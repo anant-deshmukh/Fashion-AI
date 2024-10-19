@@ -2,7 +2,7 @@
 <head>
   <title>Introducing Fashion AI</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
-
+    
   <style>
     body {
       font-family: 'Helvetica Neue', sans-serif;
@@ -14,6 +14,7 @@
 
     /* Navigation bar moved to the left corner */
     nav {
+      font-weight: bold;
       display: flex;
       justify-content: flex-start; /* Aligns nav to the left */
       padding: 20px 40px;
@@ -25,6 +26,7 @@
     }
 
     nav a {
+     
       color: #333333;
       text-transform: uppercase;
       padding: 10px 15px;
@@ -35,7 +37,7 @@
     }
 
     nav a:hover {
-      color: #e66465;
+      color: #e70606;
     }
 
     .auth-buttons a {
@@ -53,7 +55,7 @@
     }
 
     .signup-button:hover {
-      background-color: #d35454;
+      background-color: #0c0c0c;
     }
 
     .content {
@@ -294,7 +296,7 @@ input[type="submit"]:hover {
       <p><strong>Address:</strong>  Mumbai, Maharashtra</p>
     </div>
 
-    <form action="#" method="post">
+    <form id="myForm" action="#" method="post">
       <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
@@ -307,7 +309,8 @@ input[type="submit"]:hover {
         <label for="message">Message:</label>
         <textarea id="message" name="message" rows="5" required></textarea>
       </div>
-      <input type="submit" value="Send Message">
+      <input type="submit" value="Send Message" >
+     
     </form>
   </section>
 </body>
