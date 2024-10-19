@@ -47,6 +47,23 @@ function startCamera() {
         .catch(err => console.error("Error accessing the camera:", err));
 }
 
+// function captureFromCamera() {
+//     if (stream) {
+//         imageCanvas.width = videoPreview.videoWidth;
+//         imageCanvas.height = videoPreview.videoHeight;
+//         ctx.drawImage(videoPreview, 0, 0);
+//         videoPreview.style.display = 'none';
+//         imageCanvas.style.display = 'block';
+//         stream.getTracks().forEach(track => track.stop());
+//         stream = null;
+//         captureButton.disabled = true;
+//         startCameraButton.disabled = false;
+//         detectSkinTone();
+//     }
+// }
+
+let capturedImageData = null; // Variable to store captured image data
+
 function captureFromCamera() {
     if (stream) {
         imageCanvas.width = videoPreview.videoWidth;
@@ -54,10 +71,17 @@ function captureFromCamera() {
         ctx.drawImage(videoPreview, 0, 0);
         videoPreview.style.display = 'none';
         imageCanvas.style.display = 'block';
+
+        // Stop the video stream
         stream.getTracks().forEach(track => track.stop());
         stream = null;
         captureButton.disabled = true;
         startCameraButton.disabled = false;
+
+        // Store the captured image in a variable as base64 encoded data
+        capturedImageData = imageCanvas.toDataURL('image/png');
+        console.log('Captured Image Data:', capturedImageData); // Log the image data
+
         detectSkinTone();
     }
 }
@@ -101,19 +125,74 @@ function getSkinTone(r, g, b) {
 function suggestOutfit(skinTone, gender) {
     const outfits = {
         male: {
-            Fair: ['Blue Shirt with Khaki Pant','Gery Shirt with Black Pant' , 'White Shirt with navy Pant'],
-            Light: ['Royal blue', 'Maroon', 'Olive green'],
-            Medium: ['white Shirt with Navy Pant' ,'Red Shirt with white Pant' ,'Yellow Shirt with Purple Pant'],
-            Dark: ['Grey Shirt with Khaki Pant' ,'Purple Shirt with White Pant' ,'Yellow Shirt with Blue Jeans']
+            Fair: {
+                formal: ['Blue Shirt with Khaki Pant', 'Grey Shirt with Black Pant', 'White Shirt with Navy Pant'],
+                casual: ['Denim Jacket with T-Shirt', 'Polo Shirt with Shorts', 'Hoodie with Jeans'],
+                images: ['formal_male_fair_1.jpg', 'formal_male_fair_2.jpg', 'casual_male_fair_1.jpg'] // Example image paths
+            },
+            Light: {
+                formal: ['Royal Blue Suit', 'Maroon Blazer', 'Olive Green Shirt with Dress Pants'],
+                casual: ['T-Shirt with Jeans', 'Casual Shirt with Chinos', 'Light Hoodie with Joggers'],
+                images: ['formal_male_light_1.jpg', 'casual_male_light_1.jpg']
+            },
+            Medium: {
+                formal: ['White Shirt with Navy Pant', 'Red Shirt with White Pant', 'Yellow Shirt with Purple Pant'],
+                casual: ['V-neck T-Shirt', 'Button-down Shirt with Shorts', 'Windbreaker Jacket'],
+                images: ['formal_male_medium_1.jpg', 'casual_male_medium_1.jpg']
+            },
+            Dark: {
+                formal: ['Grey Shirt with Khaki Pant', 'Purple Shirt with White Pant', 'Yellow Shirt with Blue Jeans'],
+                casual: ['Sweater with Jeans', 'Casual Blazer with T-shirt', 'Graphic T-Shirt'],
+                images: ['formal_male_dark_1.jpg', 'casual_male_dark_1.jpg']
+            }
         },
         female: {
-            Fair: ['Deep purple', 'Emerald green', 'Ruby red'],
-            Light: ['Lavender', 'Teal', 'Coral'],
-            Medium: ['Fuchsia', 'Turquoise', 'Peach'],
-            Dark: ['Hot pink', 'Bright yellow', 'White']
+            Fair: {
+                formal: ['Deep Purple Dress', 'Emerald Green Suit', 'Ruby Red Gown'],
+                casual: ['Floral Dress', 'Denim Jacket with Leggings', 'T-shirt with Skirt'],
+                images: ['formal_female_fair_1.jpg', 'casual_female_fair_1.jpg']
+            },
+            Light: {
+                formal: ['Lavender Suit', 'Teal Blouse with Skirt', 'Coral Dress'],
+                casual: ['Casual Top with Shorts', 'Cardigan with Jeans', 'Printed Dress'],
+                images: ['formal_female_light_1.jpg', 'casual_female_light_1.jpg']
+            },
+            Medium: {
+                formal: ['Fuchsia Blouse with Pants', 'Turquoise Dress', 'Peach Formal Suit'],
+                casual: ['Vibrant T-shirt', 'Summer Dress', 'Sweatshirt with Joggers'],
+                images: ['formal_female_medium_1.jpg', 'casual_female_medium_1.jpg']
+            },
+            Dark: {
+                formal: ['Hot Pink Dress', 'Bright Yellow Suit', 'White Gown'],
+                casual: ['Maxi Dress', 'Sweater with Jeans', 'Jacket with T-shirt'],
+                images: ['formal_female_dark_1.jpg', 'casual_female_dark_1.jpg']
+            }
         }
     };
 
     const suggestion = outfits[gender][skinTone];
-    outfitSuggestion.textContent = `Suggested outfit colors: ${suggestion.join(', ')}`;
+
+    // Display text-based outfit suggestions
+    skinToneResult.textContent = `Detected Skin Tone: ${skinTone}`;
+    outfitSuggestion.textContent = `Formal: ${suggestion.formal.join(', ')} | Casual: ${suggestion.casual.join(', ')}`;
+
+    // Display outfit images
+    const outfitImagesContainer = document.createElement('div');
+    outfitImagesContainer.innerHTML = ''; // Clear previous content
+    outfitImagesContainer.style.display = 'flex';
+    outfitImagesContainer.style.justifyContent = 'space-around';
+    
+    suggestion.images.forEach((imageSrc, index) => {
+        const img = document.createElement('img');
+        img.src = `path/to/images/${imageSrc}`; // Update to your actual image path
+        img.alt = `Outfit ${index + 1}`;
+        img.style.width = '150px';
+        img.style.height = 'auto';
+        img.style.border = '2px solid #ccc';
+        img.style.borderRadius = '8px';
+        img.style.margin = '10px';
+        outfitImagesContainer.appendChild(img);
+    });
+
+    document.querySelector('.result-section').appendChild(outfitImagesContainer);
 }

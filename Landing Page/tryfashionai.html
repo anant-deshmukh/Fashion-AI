@@ -4,33 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Tone Outfit Suggester</title>
-    <link rel="stylesheet" href="styles.css">
-
+    <!-- <link rel="stylesheet" href="styles.css"> -->
     <script type="module">
-
 
         import { storage, firestore } from '../Database/firebase.js';
         import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
         import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
+        let stream;
+
+        // File upload handler
         document.getElementById("imageUpload").addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            uploadImage(file);
-        } else {
-            console.error("No file selected");
-        }
+            const file = event.target.files[0];
+            if (file) {
+                uploadImage(file);
+            } else {
+                console.error("No file selected");
+            }
         });
 
-        // document.getElementById("videoPreview").addEventListener("change", (event) => {
-        // const file = event.target.files[0];
-        // if (file) {
-        //     uploadImage(file);
-        // } else {
-        //     console.error("No file selected");
-        // }
-    // });
+        // Camera capture handler
+        document.getElementById("captureButton").addEventListener("click", () => {
+            captureFromCamera();
+        });
 
+        // Function to start the camera
+        document.getElementById("startCameraButton").addEventListener("click", () => {
+            startCamera();
+        });
+
+        // Function to upload image to Firebase
         async function uploadImage(file) {
             const userId = "user12345"; // Replace with the actual user ID
             const storageRef = ref(storage, `images/${userId}/${file.name}`);
@@ -48,18 +51,209 @@
                 await setDoc(doc(firestore, "users", userId), { imageUrl: downloadURL }, { merge: true });
                 console.log("Image URL saved to Firestore:", downloadURL);
 
-
             } catch (error) {
                 console.error("Error uploading image:", error);
             }
         }
 
+        // Start the camera and show video preview
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoPreview = document.getElementById("videoPreview");
+                videoPreview.srcObject = stream;
+                videoPreview.style.display = 'block';
+                videoPreview.play();
+            } catch (error) {
+                console.error("Error accessing the camera:", error);
+                alert("Unable to access the camera. Please check your permissions.");
+            }
+        }
 
-        window.uploadImage = uploadImage;
-        // window.uploadImage1 = uploadImage1;
+        // Capture the current frame from the camera
+        function captureFromCamera() {
+            if (stream) {
+                const videoPreview = document.getElementById("videoPreview");
+                const imageCanvas = document.getElementById("imageCanvas");
+                const ctx = imageCanvas.getContext('2d');
 
+                imageCanvas.width = videoPreview.videoWidth;
+                imageCanvas.height = videoPreview.videoHeight;
+                ctx.drawImage(videoPreview, 0, 0);
+
+                // Stop the stream and hide the video preview
+                stream.getTracks().forEach(track => track.stop());
+                videoPreview.style.display = 'none';
+
+                // Convert canvas to a file and upload
+                imageCanvas.toBlob(async (blob) => {
+                    const file = new File([blob], "captured_image.png", { type: 'image/png' });
+                    uploadImage(file); // Upload captured image
+                });
+            }
+        }
 
     </script>
+    <style>
+      /* Global styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    text-align: center;
+    color: #222;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.input-section,
+.preview-section,
+.result-section {
+    margin-bottom: 20px;
+    padding: 25px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+}
+
+/* Label and select input styling */
+label {
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #555;
+    display: block;
+    margin-bottom: 10px;
+}
+
+select,
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    transition: border-color 0.3s ease;
+}
+
+select:focus,
+input[type="file"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Button styling */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.5), 0 0 40px rgba(0, 123, 255, 0.3);
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Video and canvas styling */
+video,
+canvas {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+canvas {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.7); /* Green glow */
+}
+
+/* Skin tone and outfit result */
+#skinToneResult,
+#outfitSuggestion {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    select,
+    input[type="file"],
+    button {
+        font-size: 0.9rem;
+    }
+
+    #skinToneResult,
+    #outfitSuggestion {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.6rem;
+    }
+
+    select,
+    input[type="file"],
+    button {
+        font-size: 0.85rem;
+    }
+
+    #skinToneResult,
+    #outfitSuggestion {
+        font-size: 0.95rem;
+    }
+}
+
+    </style>
 </head>
 <body> 
     <div class="container">
@@ -72,7 +266,7 @@
             </select>
             <input type="file" id="imageUpload" accept="image/*">
             <button id="startCameraButton">Start Camera</button>
-            <button id="captureButton" onclick="uploadImage()">Capture from Camera</button>
+            <button id="captureButton">Capture from Camera</button>
         </div>
         <div class="preview-section">
             <video id="videoPreview" style="display: none;"></video>
