@@ -1,16 +1,13 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-
-    background: linear-gradient(to right, #e66465, #9198e5);  /*Gradient background */
-
+    background: linear-gradient(to right, #e66465, #9198e5);
 }
 
 .container {
-    width: 50%;
+    max-width: 800px; /* Adjust for responsiveness */
     margin: auto;
     overflow: hidden;
     padding: 20px;
@@ -19,35 +16,65 @@ body {
 h1 {
     color: #333;
     text-align: center;
+    font-size: 2.5em; /* Increased font size */
+    margin-bottom: 20px;
 }
 
 .input-section, .preview-section, .result-section {
     background: #fff;
     margin-bottom: 20px;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px; /* Slightly more rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s; /* Smooth scaling on hover */
 }
 
-#gender, #imageUpload{
+.input-section:hover, .preview-section:hover, .result-section:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+#gender, #imageUpload {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc; /* Border for input fields */
+    border-radius: 5px; /* Slightly rounded corners */
+    transition: border-color 0.3s; /* Transition effect for focus */
+}
+
+#gender:focus, #imageUpload:focus {
+    border-color: #e66465; /* Highlight border on focus */
+    outline: none; /* Remove default outline */
 }
 
 #startCameraButton, #captureButton {
     display: block;
     width: 70%;
-    padding: 10px;
-    margin-bottom: 10px;
-    align-items: center;
+    padding: 12px;
+    margin: auto;
+    margin-bottom: 15px;
+    background-color: #e66465; /* Button color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s; /* Transition for hover */
+}
+
+#startCameraButton:hover, #captureButton:hover {
+    background-color: #d55b5b; /* Darker shade on hover */
 }
 
 #imageCanvas, #videoPreview {
     max-width: 100%;
     height: auto;
+    border: 1px solid #ccc; /* Border around the canvas and video */
+    border-radius: 5px; /* Slightly rounded corners */
 }
 
 #skinToneResult, #outfitSuggestion {
     font-weight: bold;
+    font-size: 1.2em; /* Increased font size for emphasis */
+    color: #333; /* Consistent color */
 }
