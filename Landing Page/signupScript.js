@@ -1,5 +1,5 @@
 
-import { database } from "./firebase.js";
+import { database } from "../Database/firebase.js";
 import { ref, set } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
 
 // // Handle registration form submission

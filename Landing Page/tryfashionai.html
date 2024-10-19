@@ -5,6 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skin Tone Outfit Suggester</title>
     <link rel="stylesheet" href="styles.css">
+
+    <script type="module">
+
+
+        import { storage, firestore } from '../Database/firebase.js';
+        import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-storage.js";
+        import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+        document.getElementById("imageUpload").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            uploadImage(file);
+        } else {
+            console.error("No file selected");
+        }
+        });
+
+        // document.getElementById("videoPreview").addEventListener("change", (event) => {
+        // const file = event.target.files[0];
+        // if (file) {
+        //     uploadImage(file);
+        // } else {
+        //     console.error("No file selected");
+        // }
+    // });
+
+        async function uploadImage(file) {
+            const userId = "user12345"; // Replace with the actual user ID
+            const storageRef = ref(storage, `images/${userId}/${file.name}`);
+
+            try {
+                // Upload the image
+                const snapshot = await uploadBytes(storageRef, file);
+                console.log('Image uploaded successfully!');
+
+                // Get the download URL
+                const downloadURL = await getDownloadURL(snapshot.ref);
+                console.log('Download URL:', downloadURL);
+
+                // Store the URL in Firestore
+                await setDoc(doc(firestore, "users", userId), { imageUrl: downloadURL }, { merge: true });
+                console.log("Image URL saved to Firestore:", downloadURL);
+
+
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
+
+
+        window.uploadImage = uploadImage;
+        // window.uploadImage1 = uploadImage1;
+
+
+    </script>
 </head>
 <body> 
     <div class="container">
@@ -17,7 +72,7 @@
             </select>
             <input type="file" id="imageUpload" accept="image/*">
             <button id="startCameraButton">Start Camera</button>
-            <button id="captureButton" disabled>Capture from Camera</button>
+            <button id="captureButton" onclick="uploadImage()">Capture from Camera</button>
         </div>
         <div class="preview-section">
             <video id="videoPreview" style="display: none;"></video>
@@ -28,6 +83,6 @@
             <p id="outfitSuggestion"></p>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="tryaiScript.js"></script>
 </body>
 </html>

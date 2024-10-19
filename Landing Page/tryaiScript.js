@@ -1,3 +1,4 @@
+
 const imageUpload = document.getElementById('imageUpload');
 const startCameraButton = document.getElementById('startCameraButton');
 const captureButton = document.getElementById('captureButton');
@@ -10,9 +11,11 @@ const genderSelect = document.getElementById('gender');
 const ctx = imageCanvas.getContext('2d');
 let stream;
 
+
 imageUpload.addEventListener('change', handleImageUpload);
 startCameraButton.addEventListener('click', startCamera);
 captureButton.addEventListener('click', captureFromCamera);
+
 
 function handleImageUpload(e) {
     const file = e.target.files[0];
