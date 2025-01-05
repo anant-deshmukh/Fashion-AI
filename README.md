@@ -42,7 +42,7 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ## Contact
 For questions or suggestions, feel free to reach out:
 - **Email**: vishalwaghmare7083@gmail.com
-- **LinkedIn**: [Vishal Waghmare](https://www.linkedin.com/in/vishal-waghmare)
+- **LinkedIn**: [Vishal Waghmare](https://www.linkedin.com/in/vishal-waghmare7083/)
 
 ---
 
